@@ -222,6 +222,15 @@ EOF
 
     load_path = []
     
+    # Ugly hack to fix the encoding issues that may arise when compiling with Ruby 1.9.x
+    # Yes, it's ugly, and it's kinda hardcoded for Ruby 1.9.x for Windows, still, it works
+    base = "#{RbConfig::CONFIG['archdir']}/enc"
+    ["#{base}/*.so", "#{base}/trans/*"].each do |more_files|
+      Dir.glob(more_files).each do |filename|
+        features << filename
+      end
+    end
+
     # Find loaded files
     libs = []
     features.each do |filename|
